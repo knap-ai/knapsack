@@ -1,0 +1,35 @@
+# Python-specific ignores
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python virtual environments
+venv/
+env/
+.venv/
+
+# Jupyter Notebook files
+.ipynb_checkpoints
+
+# Rust-specific ignores
+/target/
+**/*.rs.bk
+
+# Neovim-specific ignores
+*.swp
+*.swo
+*.swn
+
+# macOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+
+# Linux system files
+.directory
+
+# Editor files and backup files
+*~
+.#*

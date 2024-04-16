@@ -1,0 +1,6 @@
+knapsack_dir = "~/knapsack"
+log_dir = "~/knapsack/logs"
+
+[embedding]
+provider = "sentence_transformers"
+id = "multi-qa-mpnet-base-dot-v1"

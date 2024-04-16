@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  qdrant:
+    image: qdrant/qdrant
+    ports:
+      - "6333:6333"  # Exposing Qdrant's default port
+    volumes:
+      - qdrant_data:/data  # Persist Qdrant data
+    environment:
+      - QDRANT__STORAGE__STORAGE_PATH=/data
+
+  knapsack:
+    build:
+      context: .
+    command: python -m connectors start
+    volumes:
+      - ./path/to/python/service:/app  # Mount the service code inside the container
+    depends_on:
+      - qdrant  # Ensure Qdrant service is started first
+
+volumes:
+  qdrant_data: ~/.knapsack_connectors/qdrant_data  # Persist Qdrant data
