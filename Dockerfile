@@ -9,6 +9,7 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE 1
 # Python outputs everything to terminal immediately and buffers it first
 ENV PYTHONUNBUFFERED 1
+ENV PYTHONHASHSEED 1024
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -34,6 +35,9 @@ RUN poetry config virtualenvs.create false \
 # Copy the rest of the application
 COPY . /app
 
+WORKDIR /app/rust
+CMD ["cargo", "build"]
+
+WORKDIR /app
 # Command to run the app using the `connectors` module
 CMD ["python", "-m", "connectors", "start"]
-

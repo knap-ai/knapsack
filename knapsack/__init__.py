@@ -6,6 +6,8 @@ ICON = '🎒'
 ROOT = configs.ROOT
 CFG = configs.CFG
 
+from knapsack.knapsack import Knapsack
+
 __version__ = '0.1.0'
 
 __all__ = (

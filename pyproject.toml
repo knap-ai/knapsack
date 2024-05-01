@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "knapsack"
+version = "0.0.1"
+description = "Knapsack - Connecting AI and data, made easy and safe."
+authors = ["cooperll <cooperlindsey3927@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.scripts]
+knapsack = "knapsack.cli:typer_app"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.12"
+cachetools = "^5.3.3"
+fastapi = "^0.108.0"
+gunicorn = "^21.2.0"
+
+# NOTE: on Ubuntu 22.04 w/ Nvidia GPU, this worked to install llama-cpp-python with CUDA support.
+# CMAKE_ARGS="-DLLAMA_CUBLAS=on" pip install llama-cpp-python --upgrade --force-reinstall --no-cache-di
+llama-cpp-python = "^0.2.57"
+loguru = "0.7.2"
+nest-asyncio = "^1.6.0"
+pandas = "^2.2.0"
+pyarrow = "^14.0.1"
+pydantic = "^2.5.3"
+requests = "^2.31.0"
+tqdm = "^4.66.2"
+typer = "^0.9.0"
+uvicorn = "^0.25.0"
+
+# NOTE: These dependencies rely on pytorch.
+# unstructured = {extras = ["docx", "pdf", "pptx"], version = "^0.12.5"}
+sentence-transformers = "^2.7.0"
+schedule = "^1.2.1"
+unstructured = {extras = ["all-docs"], version = "^0.13.6"}
+qdrant-client = "^1.9.0"
+arxiv = "^2.1.0"
+pytz = "^2024.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,19 @@
+knapsack_dir = "/Users/cooper/knapsack"
+log_dir = "/Users/cooper/knapsack/logs"
+log_level = "DEBUG"
+
+[embedder]
+provider = "sentence-transformers"
+id = "thenlper/gte-large"
+size = 1024
+
+[vector_db.qdrant]
+main_url = "http://localhost"
+port = "6333"
+timeout = 120
+
+[[connectors]]
+name = "ArXivConnector"
+start_date = "2024-01-01"
+end_date = "2024-04-30"
+interval = 300  # every 5 mins

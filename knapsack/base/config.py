@@ -4,13 +4,10 @@ which means that this file gets imported before alost anything else, and
 canot contain any other imports from this project.
 """
 
-import json
-import os
-import typing as t
 from enum import Enum
 from os.path import expanduser
 
-from .jsonable import Factory, JSONable
+from .jsonable import JSONable
 
 _CONFIG_IMMUTABLE = True
 
@@ -49,12 +46,13 @@ class Retry(BaseConfigJSONable):
     wait_multiplier: float = 1.0
 
 
-class Model(BaseConfigJSONable):
+class Embedder(BaseConfigJSONable):
     """
     Describes configuration of the AI model used by Knapsack.
     """
     provider: str = "sentence_transformers"
     id: str
+    size: int 
 
 
 class LogLevel(str, Enum):
@@ -80,6 +78,33 @@ class LogType(str, Enum):
     SYSTEM = "SYSTEM"
 
 
+class Qdrant(BaseConfigJSONable):
+    """
+    Describes the configuration for the Qdrant vector database
+
+    :param uri: The URI for the vector database
+    :param retries: Settings for retrying failed operations
+    """
+    main_url: str = "http://localhost"
+    port: int = 6333
+    timeout: int = 120
+
+
+class VectorDB(BaseConfigJSONable):
+    """
+    Describes the configuration for the vector database
+    """
+    qdrant: Qdrant
+
+# class Connectors(BaseConfigJSONable):
+#     """
+#     The data class containing all configurable connectors
+# 
+#     :param connectors: The list of connectors
+#     """
+#     connectors: list = []
+
+
 class KnapsackConfig(BaseConfigJSONable):
     """
     The data class containing all configurable Knapsack values
@@ -102,7 +127,9 @@ class KnapsackConfig(BaseConfigJSONable):
     log_dir: str = expanduser('~/knapsack/logs/ks.log')
 
     log_level: LogLevel = LogLevel.INFO
-    # logging_type: LogType = LogType.SYSTEM
+    connectors: list[dict]
+    embedder: Embedder
+    vector_db: VectorDB
 
     # dot_env: t.Optional[str] = None
 

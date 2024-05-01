@@ -1,6 +1,11 @@
 import requests
 from datetime import datetime, timedelta
 
+from tqdm import tqdm
+
+from knapsack.connectors.base_connector import BaseConnector
+
+
 class BioArXivConnector(BaseConnector):
     def fetch(self):
         for start_date, end_date in self.calculate_week_ranges():
