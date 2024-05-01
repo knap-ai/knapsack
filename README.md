@@ -1,9 +1,7 @@
-![Knapsack](assets/knapsack-logo.svg)
+<img src="assets/knapsack-logo.svg" width="100" height="100">
 
 Knapsack 🎒 - Data connectors for fast, private AI.
 ---
-
-# Knapsack 🎒
 
 ## Title and Description 📝
 Knapsack 🎒 is a open-source service that hosts and runs fast, private connectors for data to AI projects. Much like Glean or Perplexity, Knapsack 🎒 powers intelligent search and next-gen AI applications, but with an emphasis on community, privacy, and security.  
