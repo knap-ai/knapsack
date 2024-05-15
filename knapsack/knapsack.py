@@ -98,7 +98,7 @@ class Knapsack:
                 ids=ids,
                 wait=True,
             )
-            print(f"Upsert stats: {upsert_stats}")
+            logger.info(f"Upsert stats: {upsert_stats}")
 
     def learn(
         self, 
@@ -166,7 +166,7 @@ class Knapsack:
     ) -> list[dict[str, Any]]:
         self.timer.start('ss - total')
         query_embedding: list[float] = create_embeddings(self.embedder, [query])[0]
-        print(f"query_embedding: {query_embedding}")
+        logger.debug(f"query_embedding: {query_embedding}")
         results = asyncio.run(self.vector_searcher.find_nearest_from_array(
             query_embedding, 
             collection=collection,
