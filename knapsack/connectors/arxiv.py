@@ -202,7 +202,7 @@ class ArXivConnector(BaseConnector):
         """
         return {
             "connector": "arxiv",
-            "metadata": ["title", "category", "date_submitted"],
+            "metadata": ["title", "category", "date_submitted", "abstract", "authors", "date_updated", "rating", "category"],
             "embed": ["title", "abstract"],
         }
 
