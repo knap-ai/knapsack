@@ -1,5 +1,6 @@
 from functools import partial 
 from typing import Generator
+from pathlib import Path
 
 from llama_cpp import Llama
 
@@ -27,28 +28,30 @@ class LlmGenerator(object):
     def setup_llm_model(self):
         if self.llm is not None:
             return 
-        # TODO: move the hard-coded stuff into the config file 
-        # model_cfg = CFG.model
-        mistral_v02_uri = "https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/resolve/main/mistral-7b-instruct-v0.2.Q5_K_M.gguf?download=true"
-        gemma_2b_q5_uri = "https://huggingface.co/mlabonne/gemma-2b-GGUF/resolve/main/gemma-2b.Q5_K_M.gguf?download=true"
-        gemma_2b_full_uri = "https://huggingface.co/google/gemma-2b/resolve/main/gemma-2b.gguf?download=true"
 
-        model_uri = mistral_v02_uri 
-        # model_uri = gemma_2b_q5_uri
+        model_path = Path(CFG.model_dir) / Path(CFG.model_name)
 
-        self.model_name = "Mistral-7B-Instruct-v0.2.Q5_K_M"
-        # self.model_name = "Gemma-2B-Q5_K_M"
-
-        try: 
-            model_path = self._download_model(uri=mistral_v02_uri)
-            # model_path = self._download_model(uri=model_uri)
-        except Exception as e:
-            raise KnapsackException(f"Couldn't download model: {model_uri}. Exception: {e}")
-
+        if not model_path.exists():
+            raise KnapsackException(f"Model path does not exist: {model_path}")
         self.llm = Llama(
             model_path=str(model_path),
-            n_ctx=16000,
-            n_gpu_layers=200000,
+            n_ctx=CFG.model.llama_cpp.n_ctx,
+            n_gpu_layers=CFG.model.llama_cpp.n_gpu_layers,
+            verbose=False,
+            n_threads=6,
+        )
+
+    def load_model(
+        self, 
+        model_path: Path, 
+        n_ctx: int,
+    ):
+        if not model_path.exists():
+            raise KnapsackException(f"Model path does not exist: {model_path}")
+        self.llm = Llama(
+            model_path=model_path,
+            n_ctx=n_ctx,
+            n_gpu_layers=CFG.model.llama_cpp.n_gpu_layers,
             verbose=False,
             n_threads=6,
         )

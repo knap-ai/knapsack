@@ -28,16 +28,6 @@ def create_embeddings(
     llm: t.Union[Llama, SentenceTransformer], 
     content: list[str],
 ) -> list[list[float]]:
-    cfg = procure_cfg()
-    remote_embed = cfg.get('remote_embed', None)
-    if remote_embed:
-        item = {'content': content}
-        response = requests.post(remote_embed, json=item)
-        if response.status_code == 200:
-            return response.json()
-        else:
-            raise ValueError(f"Received status_code != 200 from remote_embed: {response.status_code}")
-
     if isinstance(llm, Llama):
         result = llm.create_embedding(content)
         if 'data' in result: 

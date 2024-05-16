@@ -23,6 +23,7 @@ from knapsack.connectors.arxiv import ArXivConnector
 from knapsack.connectors.base_connector import BaseConnector
 from knapsack.connectors.bioarxiv import BioArXivConnector
 from knapsack.knap_document import KnapDocument
+from knapsack.memory.embed import create_embeddings
 from knapsack.memory.qdrant import QdrantVectorSearcher
 from knapsack.util.upsert_stats import UpsertStats
 
@@ -75,7 +76,7 @@ class Knapsack:
             raise ValueError(f"Unsupported connector: {connector_name}")
 
     def run(self):
-        print(f"fetching...")
+        logger.debug("starting connectors..")
         for connector in tqdm(self.connectors, desc="Running connectors"):
             self._learn_from_connector(connector)  
         # for connector in tqdm(self.connectors, desc="Running connectors"):
@@ -97,7 +98,7 @@ class Knapsack:
                 ids=ids,
                 wait=True,
             )
-            print(f"Upsert stats: {upsert_stats}")
+            logger.info(f"Upsert stats: {upsert_stats}")
 
     def learn(
         self, 
@@ -164,7 +165,8 @@ class Knapsack:
         with_vector: bool = False,
     ) -> list[dict[str, Any]]:
         self.timer.start('ss - total')
-        query_embedding: list[float] = self.embedder.embed(query)[0]
+        query_embedding: list[float] = create_embeddings(self.embedder, [query])[0]
+        logger.debug(f"query_embedding: {query_embedding}")
         results = asyncio.run(self.vector_searcher.find_nearest_from_array(
             query_embedding, 
             collection=collection,

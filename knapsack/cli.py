@@ -5,7 +5,9 @@ from subprocess import Popen
 
 import requests
 import typer
+import uvicorn
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, field_validator
 
 import knapsack
@@ -17,6 +19,17 @@ typer_app = typer.Typer()
 ks = Knapsack()
 api = FastAPI()
 
+origins = [
+    "*"
+]
+
+api.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @typer_app.command()
 def deploy(
@@ -27,22 +40,23 @@ def deploy(
     typer.echo("Deploying knapsack.")
 
     try: 
-        pid_path = Path(os.path.expanduser(CFG.knapsack_dir)) / Path("gunicorn_pid.txt")
+        # pid_path = Path(os.path.expanduser(CFG.knapsack_dir)) / Path("gunicorn_pid.txt")
 
-        num_workers = 4
-        app_module = 'knapsack.cli:api'
-        command = [
-            "gunicorn", 
-            "-w", str(num_workers), 
-            "-k", "uvicorn.workers.UvicornWorker", 
-            "-b", f"{host}:{port}",
-            "--timeout", "16000",
-            app_module,
-        ]
-        ks_process: Popen = Popen(command)
-        
-        with open(str(pid_path), "w") as file:
-            file.write(str(ks_process.pid))
+        # num_workers = 4
+        # app_module = 'knapsack.cli:api'
+        # command = [
+        #     "gunicorn", 
+        #     "-w", str(num_workers), 
+        #     "-k", "uvicorn.workers.UvicornWorker", 
+        #     "-b", f"{host}:{port}",
+        #     "--timeout", "16000",
+        #     app_module,
+        # ]
+        # ks_process: Popen = Popen(command)
+        # 
+        # with open(str(pid_path), "w") as file:
+        #     file.write(str(ks_process.pid))
+        uvicorn.run(api, host=host, port=port, workers=1)
 
     except Exception as e:
         logger.exception(e)
