@@ -17,3 +17,8 @@ name = "ArXivConnector"
 start_date = "2015-01-01"
 end_date = "2024-05-01"
 interval = 300  # every 5 mins
+
+[[connectors]]
+name = "GitConnector"
+project_name = "Knapsack"
+repository_dir = "/Users/karranbesen/repositories/knap"

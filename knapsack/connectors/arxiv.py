@@ -7,7 +7,7 @@ import feedparser
 import uuid
 from tqdm import tqdm
 
-from knapsack.connectors.base_connector import BaseConnector
+from knapsack.connectors.base_date_range_connector import BaseDateRangeConnector
 
 
 class Entry(object):
@@ -152,7 +152,7 @@ def datetime_fromisoformat(datestr: str):
     return datetime.strptime(datestr, "%Y-%m-%dT%H:%M:%S")
 
 
-class ArXivConnector(BaseConnector):
+class ArXivConnector(BaseDateRangeConnector):
     def __init__(self, max_results: int | None = 1024, **kwargs):
         super().__init__(**kwargs)
         self.max_results = max_results
