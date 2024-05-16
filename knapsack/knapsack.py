@@ -22,6 +22,7 @@ from knapsack.base.util import Timer, cosine_similarity
 from knapsack.connectors.arxiv import ArXivConnector
 from knapsack.connectors.base_connector import BaseConnector
 from knapsack.connectors.bioarxiv import BioArXivConnector
+from knapsack.connectors.git import GitConnector
 from knapsack.knap_document import KnapDocument
 from knapsack.memory.embed import create_embeddings
 from knapsack.memory.qdrant import QdrantVectorSearcher
@@ -72,6 +73,8 @@ class Knapsack:
             return ArXivConnector(**params)
         elif connector_name == "BioArXivConnector":
             return BioArXivConnector(**params)
+        elif connector_name == "GitConnector":
+            return GitConnector(**params)
         else:
             raise ValueError(f"Unsupported connector: {connector_name}")
 

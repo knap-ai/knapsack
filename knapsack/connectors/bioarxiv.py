@@ -3,10 +3,10 @@ from datetime import datetime, timedelta
 
 from tqdm import tqdm
 
-from knapsack.connectors.base_connector import BaseConnector
+from knapsack.connectors.base_date_range_connector import BaseDateRangeConnector
 
 
-class BioArXivConnector(BaseConnector):
+class BioArXivConnector(BaseDateRangeConnector):
     def fetch(self):
         for start_date, end_date in self.calculate_week_ranges():
             response = self.make_request(start_date, end_date)
