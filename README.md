@@ -16,17 +16,25 @@ To get started with Knapsack 🎒, ensure you have Docker installed on your mach
    git clone https://github.com/your-repo/knapsack.git
    cd knapsack
 
-2. Run it as a FastAPI server:
+
+2. Run it as a FastAPI server on your local machine:
 ```bash
 python -m knapsack.cli deploy --port 8888
 ```
 
-3. Or utilize it directly as a library:
+3. Or run it as a FastAPI server in a Docker container 
+```bash
+docker-compose up
+```
+
+4. Or utilize it directly as a library:
 ```python
 from knapsack import Knapsack
 ks = Knapsack()
 ks.run()
 ```
+
+Please note that the main_url property in the knapsack.toml database configuration must be set to the database image name (e.g., qdrant if using Docker Compose) or to localhost if running in the local environment
 
 ## Roadmap 🔨
 

@@ -17,6 +17,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libffi-dev \
     libssl-dev \
+    ffmpeg \
+    libsm6 \
+    libxext6 \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Poetry
@@ -35,9 +39,6 @@ RUN poetry config virtualenvs.create false \
 # Copy the rest of the application
 COPY . /app
 
-WORKDIR /app/rust
-CMD ["cargo", "build"]
-
 WORKDIR /app
-# Command to run the app using the `connectors` module
-CMD ["python", "-m", "connectors", "start"]
+
+CMD ["python", "-m", "knapsack.cli", "deploy", "--port",  "8888"]
