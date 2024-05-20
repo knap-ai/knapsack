@@ -106,7 +106,7 @@ class GitConnector(BaseConnector):
         return {
             "connector": "git",
             "repository_path": self.repository_path_str,
-            "embed": ["file_content", "file_name"],
+            "embed": ["file_name", "file_path", "file_content"],
             "metadata": ["file_content", "file_name", "file_path", "file_summary", "file_creation_timestamp", "file_modification_timestamp", "file_size_in_mb"],
         }
 
