@@ -92,12 +92,14 @@ class Knapsack:
     def _learn_from_connector(self, conn: BaseConnector):
         for results in conn.fetch():
             tags = conn.knapsack_tags()
-            data = [r.to_dict() for r in results]
+            extra_metadata = conn.get_extra_metadata(tags)
+            data = [{**r.to_dict(), **extra_metadata} for r in results]
             ids = [r.uuid() for r in results]
             upsert_stats = self.learn(
                 data=data,
                 collection="knapsack",
                 tags=tags,
+                extra_metadata_keys=extra_metadata.keys(),
                 ids=ids,
                 wait=True,
             )
@@ -108,6 +110,7 @@ class Knapsack:
         data: list[dict[str, Any]] | str | Path, 
         collection: str, 
         tags: dict[str, Any],
+        extra_metadata_keys: list[str],
         ids: list[str],
         wait: bool = False
     ) -> UpsertStats | None:
@@ -121,7 +124,7 @@ class Knapsack:
             if the data has a 'uuid' field (or column in the .csv)
         """
         # logger.debug(f"LEARN: data:{data} \ncollection:{collection}\ntags:{tags}\nids:{ids}\nwait:{wait}")
-        doc = KnapDocument(data=data, tags=tags)
+        doc = KnapDocument(data=data, tags=tags, extra_metadata_keys=extra_metadata_keys)
         result = None
         # logger.debug(f"Cache keys before clear: {self.lru_cache.keys()}")
         clear_cache_for_collection(self.lru_cache, self.cache_lock, collection_to_clear=collection)
