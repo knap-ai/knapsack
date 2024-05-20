@@ -8,7 +8,7 @@ id = "thenlper/gte-large"
 size = 1024
 
 [vector_db.qdrant]
-main_url = "http://localhost"
+main_url = "qdrant"
 port = "6333"
 timeout = 120
 
@@ -21,4 +21,4 @@ interval = 300  # every 5 mins
 [[connectors]]
 name = "GitConnector"
 project_name = "Knapsack"
-repository_dir = "/Users/karranbesen/repositories/knap"
+repository_path = "/Users/karranbesen/repositories/knap"

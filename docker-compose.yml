@@ -11,20 +11,13 @@ services:
       - ~/.knapsack/qdrant:/qdrant/storage  # Persist Qdrant data
     environment:
       - QDRANT__STORAGE__STORAGE_PATH=/qdrant/storage
+
   knapsack:
-    build: .
+    build:
+      context: .
     ports:
-      - "8888:8888"  # Example port mapping, adjust as needed for your service
+      - 8888:8888
     volumes:
       - .:/app
-    environment:
-      - KNAPSACK_CONFIG=/app/knapsack.toml
-
-# knapsack:
-#   build:
-#     context: .
-#   command: python -m connectors start
-#   volumes:
-#     - ./path/to/python/service:/app  # Mount the service code inside the container
-#   depends_on:
-#     - qdrant  # Ensure Qdrant service is started first
+    depends_on:
+      - qdrant
