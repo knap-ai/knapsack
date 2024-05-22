@@ -28,6 +28,7 @@ class KnapDocument(object):
     def __init__(self, 
         data: t.Union[list[dict[str, t.Any]], str, Path], 
         tags: dict[str, t.Any] = {},
+        extra_metadata_keys: list[str] = [],
     ) -> None:
         """
         data - list of dict[str, Any], or Path - `data` contains either data
@@ -59,6 +60,7 @@ class KnapDocument(object):
         else: 
             self.is_dict = True
         self.tags = tags
+        self.extra_metadata_keys = extra_metadata_keys
         self._in_memory: bool = False
         self.tmp_parquet_file = None
         self.lock = Lock()
@@ -148,8 +150,8 @@ class KnapDocument(object):
         return []
 
     def metadata_cols(self) -> list[str]:
-        if isinstance(self.tags, dict) and 'metadata' in self.tags:
-            return self.tags['metadata']
+        if isinstance(self.tags, dict):
+            return self.tags.get('metadata', []) + list(self.extra_metadata_keys)
         return []
 
     def to_prompt(self) -> str:
